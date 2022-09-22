@@ -10,6 +10,8 @@ from utils import cal_accuracy, evaluate_model
 BATCH_SIZE = 128
 #device = torch.device("mps") if torch.backends.mps.is_available() else torch.device("cpu")
 DEVICE = torch.device("cpu")
+NUM_EPOCHS = 5
+
 
 def main():
     print("Reading Data....")
@@ -33,9 +35,8 @@ def main():
     model.to(DEVICE)
     loss_func = nn.BCEWithLogitsLoss()
     optimizer = torch.optim.Adam(model.parameters(), lr=1e-3)
-    epochs = 10
 
-    for epoch in range(1, epochs + 1):
+    for epoch in range(1, NUM_EPOCHS + 1):
         print("Epoch", epoch) 
         loss_sum, n = 0.0, 0
         model.train()
@@ -53,6 +54,10 @@ def main():
             cal_accuracy(model, train_iter)[0])
         print("Val loss:", val_loss, ", Accuracy: ", 
             cal_accuracy(model, val_iter)[0])
+
+    print("Training Finished....")
+    print("Accuracy: ", cal_accuracy(model, test_iter)[0])
+    print("Confusion Matrix: ", cal_accuracy(model, test_iter)[1])
 
 if __name__ == '__main__':
     main()

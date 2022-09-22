@@ -88,24 +88,12 @@ def standardize_data(train_features, val_features, test_features):
     return train_features, val_features, test_features
 
 
-def data_loader(features, labels, batch_size):
-    #device = torch.device("mps") if torch.backends.mps.is_available() else torch.device("cpu")
-    device = torch.device("cpu")
+def data_loader(features, labels, device, batch_size):
 
     features = torch.Tensor(features).float().to(device)
     labels = torch.Tensor(labels).float().to(device)
     data = torch.utils.data.TensorDataset(features, labels)
     data_iter = torch.utils.data.DataLoader(data, batch_size, shuffle=True)
 
-    return data_iter, device
+    return data_iter
 
-
-if __name__ == '__main__':
-    print("Reading Data")
-    data_file_names = data_file_names()
-    (train_features, val_features, test_features,
-     train_labels, val_labels, test_labels) = read_data_arrays(
-             data_file_names)
-    print("Scaling Data")
-    train_features, val_features, test_features = standardize_data(
-            train_features, val_features, test_features)
