@@ -8,6 +8,8 @@ from utils import cal_accuracy, evaluate_model
 
 
 BATCH_SIZE = 128
+#device = torch.device("mps") if torch.backends.mps.is_available() else torch.device("cpu")
+DEVICE = torch.device("cpu")
 
 def main():
     print("Reading Data....")
@@ -21,14 +23,14 @@ def main():
             train_features, val_features, test_features)
     
     print("Data Loader....")
-    train_iter, device = data_loader(train_features, train_labels, BATCH_SIZE)
-    val_iter, device = data_loader(val_features, val_labels, BATCH_SIZE)
-    test_iter, device = data_loader(test_features, test_labels, BATCH_SIZE)
+    train_iter = data_loader(train_features, train_labels, DEVICE, BATCH_SIZE)
+    val_iter = data_loader(val_features, val_labels, DEVICE, BATCH_SIZE)
+    test_iter = data_loader(test_features, test_labels, DEVICE, BATCH_SIZE)
     
     print("Training Model....")
     n_chans = 19
     model=ChronoNet(n_chans)
-    model.to(device)
+    model.to(DEVICE)
     loss_func = nn.BCEWithLogitsLoss()
     optimizer = torch.optim.Adam(model.parameters(), lr=1e-3)
     epochs = 10
@@ -48,9 +50,9 @@ def main():
     
         val_loss = evaluate_model(model, loss_func, val_iter)
         print("Train loss:", loss_sum / (t+1), "Accuracy: ", 
-            cal_accuracy(model, train_labels, train_features)[0])
+            cal_accuracy(model, train_iter)[0])
         print("Val loss:", val_loss, ", Accuracy: ", 
-            cal_accuracy(model, val_labels, val_features)[0])
+            cal_accuracy(model, val_iter)[0])
 
 if __name__ == '__main__':
     main()

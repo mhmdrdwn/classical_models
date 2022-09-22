@@ -33,12 +33,14 @@ def evaluate_model(model, loss_func, data_iter):
         return loss_sum / n
 
 
-def cal_accuracy(model, labels, features):
+def cal_accuracy(model, data_iter):
+    ytrue = []
+    ypreds = []
     with torch.no_grad():
-        y_hat = model(features)
-
-    yhat = [0 if i<0.5 else 1 for i in y_hat]
-    ytrue = labels.numpy()
-    ypreds = yhat
+        for x, y in data_iter:
+            yhat = model(x)
+            yhat = [0 if i<0.5 else 1 for i in yhat]
+            ytrue.extend(list(y.numpy()))
+            ypreds.extend(yhat)
 
     return accuracy_score(ytrue, ypreds), confusion_matrix(ytrue, ypreds)
