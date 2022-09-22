@@ -4,6 +4,8 @@ import torch.nn as nn
 
 from load_data import read_data_arrays, data_file_names, standardize_data, data_loader
 from models import ChronoNet
+from utils import cal_accuracy, evaluate_model 
+
 
 BATCH_SIZE = 128
 
@@ -46,9 +48,9 @@ def main():
     
         val_loss = evaluate_model(model, loss_func, val_iter)
         print("Train loss:", loss_sum / (t+1), "Accuracy: ", 
-            print_accuracy(model, train_labels, train_features)[0])
+            cal_accuracy(model, train_labels, train_features)[0])
         print("Val loss:", val_loss, ", Accuracy: ", 
-            print_accuracy(model, val_labels, val_features)[0])
+            cal_accuracy(model, val_labels, val_features)[0])
 
 if __name__ == '__main__':
     main()

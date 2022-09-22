@@ -3,6 +3,9 @@ import torch
 
 from sklearn.preprocessing import StandardScaler
 from sklearn.base import TransformerMixin,BaseEstimator
+from sklearn.metrics import accuracy_score, confusion_matrix
+
+
 #https://stackoverflow.com/questions/50125844/how-to-standard-scale-a-3d-matrix
 class StandardScaler3D(BaseEstimator,TransformerMixin):
     #batch, sequence, channels
@@ -29,7 +32,6 @@ def evaluate_model(model, loss_func, data_iter):
             n += 1
         return loss_sum / n
 
-from sklearn.metrics import accuracy_score, confusion_matrix
 
 def cal_accuracy(model, labels, features):
     with torch.no_grad():
