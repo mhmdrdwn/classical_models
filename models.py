@@ -28,7 +28,7 @@ class ChronoNet(nn.Module):
     self.gru2=nn.GRU(input_size=32,hidden_size=32,batch_first=True)
     self.gru3=nn.GRU(input_size=64,hidden_size=32,batch_first=True)
     self.gru4=nn.GRU(input_size=96,hidden_size=32,batch_first=True)
-    self.gru_linear=nn.Linear(250,1)
+    self.gru_linear=nn.Linear(62,1)
     self.flatten=nn.Flatten()
     self.fc1=nn.Linear(32,1)
     self.relu=nn.ReLU()
@@ -50,7 +50,6 @@ class ChronoNet(nn.Module):
     x=self.fc1(x)
     out = torch.sigmoid(x)
     return out
-
 
 class LSTM(nn.Module):
     def __init__(self, output_size, input_size, hidden_size, num_layers, num_channels=21):
