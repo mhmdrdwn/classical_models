@@ -3,7 +3,7 @@ import torch
 
 from sklearn.preprocessing import StandardScaler
 from sklearn.base import TransformerMixin,BaseEstimator
-from sklearn.metrics import accuracy_score, confusion_matrix
+from sklearn.metrics import accuracy_score, confusion_matrix, f1_score, precision_score, recall_score
 
 
 #https://stackoverflow.com/questions/50125844/how-to-standard-scale-a-3d-matrix
@@ -43,4 +43,8 @@ def cal_accuracy(model, data_iter):
             ytrue.extend(list(y.numpy()))
             ypreds.extend(yhat)
 
-    return accuracy_score(ytrue, ypreds), confusion_matrix(ytrue, ypreds)
+    return (accuracy_score(ytrue, ypreds), 
+            confusion_matrix(ytrue, ypreds), 
+            precision_score(ytrue, ypreds), 
+            recall_score(ytrue, ypreds),
+            f1_score(ytrue, ypreds))
